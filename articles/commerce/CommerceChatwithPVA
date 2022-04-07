@@ -1,0 +1,8 @@
+# Commerce Chat with Power Virtual Agents
+
+Commerce Chat with Power Virtual Agents enables Dynamics 365 e-commerce customers to chat with chatbots built using Power Virtual Agents. 
+
+Power Virtual Agents empowers teams to easily create powerful bots using a guided, no-code graphical interface without the need for data scientists or developers. Power Virtual Agents addresses many of the major issues with bot building in the industry today. It eliminates the gap between the subject matter experts and the development teams building the bots, and the long latency between teams recognizing an issue and updating the bot to address it. It removes the complexity of exposing teams to the nuances of conversational AI and the need to write complex code. It minimizes the IT effort required to deploy and maintain a custom conversational solution.
+
+
+Commerce Chat with Power Virtual Agents is built as e-commerce REACT module on top of Bot Framework Webchat and uses CDN version of the same. 
