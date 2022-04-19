@@ -1,8 +1,297 @@
+# Introducing Commerce Chat with Power Virtual Agents and Omnichannel for Customer Service
+
+With Commerce Chat, we are empowering Microsoft Dynamics 365 e-commerce customers to leverage chat capabilities of Microsoft Dynamics 365 Omnichannel for Customer Service with live agent support and chatbot capabilities with Microsoft Power Virtual Agents to address customer queries, enable customer service and sales for commerce customers. 
+
+This feature enables retailers to
+ - Increase cart conversion to sales
+ - Increase personalized engagement with their consumers and better retention.
+ - Increase customer service with integration of human agent and self-service Power Virtual Agents chatbots
+ - Increase agent experience with real-time customer profile, order, and purchasing data driving operational improvements and engagement.
+ - Increase overall customer satisfaction.
+ 
+Retailers have a choice to use Power Virtual Agents and/or Omnichannel for Customer Service. To facilitate this choice, we are providing with two chat modules - Commerce Chat with Power Virtual Agents when you only want chatbot capabilities and Commerce Chat with Omnichannel for Customer Service when you want to use Omnichannel for Customer Service.  
+
+Following capabilities are available as part of this feature
+
+ - Commerce Chat with Power Virtual Agents.
+ - Commerce Chat with Omnichannel for Customer Service.
+ - Commerce Call Center add-in for Omnichannel for Customer Service.
+ -  Commerce starter content pack for Power Virtual Agents.
+
 # Commerce Chat with Power Virtual Agents
 
 Commerce Chat with Power Virtual Agents enables Dynamics 365 e-commerce customers to chat with chatbots built using Power Virtual Agents. 
 
-Power Virtual Agents empowers teams to easily create powerful bots using a guided, no-code graphical interface without the need for data scientists or developers. Power Virtual Agents addresses many of the major issues with bot building in the industry today. It eliminates the gap between the subject matter experts and the development teams building the bots, and the long latency between teams recognizing an issue and updating the bot to address it. It removes the complexity of exposing teams to the nuances of conversational AI and the need to write complex code. It minimizes the IT effort required to deploy and maintain a custom conversational solution.
+Power Virtual Agents empowers teams to easily create powerful bots using a guided, no-code graphical interface without the need for data scientists or developers. Power Virtual Agents addresses many of the major issues with bot building in the industry today. It eliminates the gap between the subject matter experts and the development teams building the bots, and the long latency between teams recognizing an issue and updating the bot to address it. It removes the complexity of exposing teams to the nuances of conversational AI and the need to write complex code. And it minimizes the IT effort required to deploy and maintain a custom conversational solution.
+Commerce Chat with Power Virtual Agents canvas has been built using the [Bot Framework Web Chat component's](https://docs.microsoft.com/en-us/azure/bot-service/bot-builder-webchat-overview?view=azure-bot-service-4.0) CDN version. The Bot Framework Web Chat component is a highly customizable web-based client for the Bot Framework V4 SDK.  Power Virtual Agents is built on top of [Azure Bot Services](https://azure.microsoft.com/services/bot-service/) and Commerce Chat with its use of Bot Framework Web Chat component can communicate with Power Virtual Agents. 
+
+Commerce Chat with Power Virtual Agents module provides the following capabilities:
+ - Configurable module for e-commerce to easily configure chat with Power Virtual Agents and brand it for your website.
+ - Trigger specific topic within Power Virtual Agents.
+ - Enable single sign on with e-commerce, Azure AAD B2C and Power Virtual Agents.
+ - Trigger this as proactive chat based on different trigger like cart value, number of items in cart. 
+
+## Prerequisites
+Before you set up e-commerce module for Commerce Chat, you must configure a Commerce environment that includes Cloud Scale Unit, the Commerce online software development kit (SDK), and the Commerce module library. 
+
+### Install modules
+The following packages that are available in the dynamics365-commerce feed include Commerce chat modules:
+
+ - @msdyn365-commerce-marketplace/commercechat-with-powervirtualagents - This package includes commerce chat with Power Virtual Agents. Use this package if you only want Power Virtual Agents powered chatbot experience. 
+ - @msdyn365-commerce-marketplace/commercechat-with-omnichannelforcustomerservice – 
+ 
+ This package includes Commerce Chat with Omnichannel for Customer Service. Use this package if you want Omnichannel for Customer Service live agents interaction. Omnichannel for Customer Service has pre-built integration with Power Virtual Agents and this package should be used for chat experience with both of these products. 
+
+However, although the packages are part of that feed, they are under a different namespace. Therefore, you must follow these steps to add registry entries for the namespace. 
+
+1.  Update the. npmrc file so that it includes the following registry entry (if the entry isn’t already included):
+```
+@msdyn365-commerce-marketplace:registry=https://pkgs.dev.azure.com/commerce-partner/Registry/_packaging/dynamics365-commerce/npm/registry/
+```
+2. Update the .yarnrc file so that it includes the following registry entry (if the entry isn't already included):
+```
+"@msdyn365-commerce-marketplace:registry" "https://pkgs.dev.azure.com/commerce-partner/Registry/_packaging/dynamics365-commerce/npm/registry/"
+```
+
+To install the packages in your local environment, run the following commands from the command prompt. These commands automatically update the package.json file so that it includes the dependencies.
+```
+yarn add @msdyn365-commerce-marketplace/commercechat-with-powervirtualagents  
+yarn add @msdyn365-commerce-marketplace/commercechat-with-omnichannelforcustomerservice
+```
+In the package.json, you should update the package version to a specific version.
 
 
-Commerce Chat with Power Virtual Agents is built as e-commerce REACT module on top of Bot Framework Webchat and uses CDN version of the same. 
+## Configuration of the module
+
+Commerce Chat with Power Virtual Agents can be added as a fragment or within a container on the specific page. Once it is added, it needs to be configured to connect with Power Virtual Agents.   As a pre-requisite, you need to configure a Power Virtual Agents chatbot and obtain some of the parameters through Power Virtual Agents authoring tool. 
+
+### Bot parameters
+
+| Field Name| Description          | Default value  |
+| ------------- |:-------------:| -----:|
+| Token API URL    |URL of the custom API that should provide conversation Token | https://powerva.microsoft.com/api/botmanagement/v1/directline/directlinetoken |
+| Bot Id     | Bot Identifier obtained from Power Virtual Agents Authoring portal|    |
+| Tenant Id | Tenant Identifier obtained from Power Virtual Agents Authoring portal     |    |
+
+
+### Module CSS
+
+| Field Name| Description          | Default value  |
+| ------------- |:-------------:| -----:|
+| Chat position    | CSS position property (fixed, absolute, relative...)| fixed |
+| Chat height    | Bot Identifier obtained from Power Virtual Agents Authoring portal|    |
+| Tenant Id | Tenant Identifier obtained from Power Virtual Agents Authoring portal     |    |
+
+
+
+
+## Content security policy setting
+
+Content Security Policy (CSP) in Microsoft Dynamics 365 Commerce is an additional layer of security that helps detect and mitigate some types of web attacks. Content Security policy is turned on by default. As part of the extensions tab in the site builder tool, these need to be edited to communicate with additional domains used by Power Virtual Agents and Omnichannel for Customer Service. 
+
+### child-src
+
+https://login.microsoftonline.com
+https://oc-cdn-ocprod.azureedge.net
+https://powerva.microsoft.com
+https://directline.botframework.com
+wss://directline.botframework.com
+https://*.communication.azure.com
+https://*.teams.microsoft.com
+https://ecs.office.com
+https://*.skype.com/*
+https://browser.pipe.aria.microsoft.com
+https://oc-cdn-ocprod.azureedge.net
+https://cdn.botframework.com
+https://webchatic3.blob.core.windows.net
+https://comms.omnichannelengagementhub.com
+https://ocsdk-prod.azureedge.net
+https://*.asm.skype.com
+https://*.ng.msg.teams.microsoft.com/*
+
+### font-src
+https://oc-cdn-ocprod.azureedge.net
+
+### frame-ancestors
+https://oc-cdn-ocprod.azureedge.net
+
+### img-src
+https://oc-cdn-ocprod.azureedge.net
+
+### media-src, object-src
+https://oc-cdn-ocprod.azureedge.net
+
+### script-src
+https://oc-cdn-ocprod.azureedge.net
+https://cdn.botframework.com
+
+### style-src
+https://oc-cdn-ocprod.azureedge.net
+
+Power Virtual Agents maintains a list of these domains as part of their [documentation](https://docs.microsoft.com/en-us/power-virtual-agents/requirements-quotas) and refer to this for latest information. 
+
+Omnichannel for Customer Service maintains a list of these domains as part of their [documentation](https://docs.microsoft.com/en-us/dynamics365/customer-service/system-requirements-omnichannel) and refer to this for latest.
+
+
+## Single sign-on
+
+Commerce Chat supports single sign-on with Power Virtual Agents. Dynamics 365 e-commerce supports identity management using Azure AAD B2C. The same can be configured on Power Virtual Agents as well to enable single sign-on experience.  The end to end single sign-on flow is documented [here](https://docs.microsoft.com/en-us/power-virtual-agents/configure-sso#:~:text=Power%20Virtual%20Agents%20supports%20single%20sign-on%20%28SSO%29,%20which,supported%20for%20Azure%20Active%20Directory%20%28Azure%20AD%29%20V2.). 
+
+| Field| Description           | Default value  |
+| ------------- |:-------------:| -----:|
+| Authentication option     | 	 | Manual |
+| Service provider   | centered      |   $12 |
+| Client Id | left-aligned     |    $1 |
+| Client secret | left-aligned     |    $1 |
+| Scope delimiter | left-aligned     |    $1 |
+| Authorization Url | left-aligned     |    $1 |
+| Authorization Url query string template | left-aligned     |    $1 |
+| Token URL Template  | left-aligned     |    $1 |
+| Token URL | left-aligned     |    $1 |
+| Refresh URL template | left-aligned     |    $1 |
+| Refresh URL | left-aligned     |    $1 |
+| Refresh body template | left-aligned     |    $1 |
+| Scopes | left-aligned     |    $1 |
+
+
+
+
+# Commerce Chat with Omnichannel for Customer Service
+
+Commerce Chat with Omnichannel for Customer Service enables Dynamics 365 e-commerce customers to chat with live agents using Microsoft Dynamics 365 Omnichannel for Customer Service. 
+
+Microsoft Dynamics 365 Omnichannel for Customer Service to manage chat channels, users (agents and supervisors), work streams, conversations, and queues, and effectively route important conversations to agents quickly. Dynamics 365 Omnichannel for Customer Services helps manage the capacity of agents, so they handle conversations effectively and assist your customers better. Dynamics 365 Omnichannel for Customer Services helps manage the types of conversations agents receive using work stream and queue configurations.
+
+This new module enables retailers to instantly connect and engage with their customers using chat channel when customer escalates a request or via pre-defined topic flow using Power Virtual Agents. We pass contextual customer identification from e-commerce to Omnichannel for Customer Service and enable agents to engage with customers. Agents can leverage out of box Omnichannel for Customer Service functionality like real time notifications, real time sentimental analysis, integrated communication, and agent productivity tools like KB integration, search, and case creation effectively. 
+Proactive Chat notifications and chat can appear on e-commerce page based on different parameters like moving between specific pages, specific pages, specific product pages, time spent on a page, cart value, number of items etc. 
+With enablement of “Commerce Add-In for Customer Service”, agents have instant access to customer Information, sales information and can act on behalf of their customers with deep linking capability to Commerce Call Center. 
+
+## Prerequisites
+Before you set up e-commerce module for Commerce Chat, you must configure a Commerce environment that includes Cloud Scale Unit, the Commerce online software development kit (SDK), and the Commerce module library. 
+
+### Install modules
+The following packages that are available in the dynamics365-commerce feed include Commerce chat modules:
+
+ - @msdyn365-commerce-marketplace/commercechat-with-powervirtualagents - This package includes commerce chat with Power Virtual Agents. Use this package if you only want Power Virtual Agents powered chatbot experience. 
+ - @msdyn365-commerce-marketplace/commercechat-with-omnichannelforcustomerservice – This package includes Commerce Chat with Omnichannel for Customer Service. Use this package if you want Omnichannel for Customer Service live agents interaction. Omnichannel for Customer Service has pre-built integration with Power Virtual Agents and this package should be used for chat experience with both of these products. 
+
+However, although the packages are part of that feed, they are under a different namespace. Therefore, you must follow these steps to add registry entries for the namespace. 
+
+1.  Update the. npmrc file so that it includes the following registry entry (if the entry isn’t already included):
+```
+@msdyn365-commerce-marketplace:registry=https://pkgs.dev.azure.com/commerce-partner/Registry/_packaging/dynamics365-commerce/npm/registry/
+```
+2. Update the .yarnrc file so that it includes the following registry entry (if the entry isn't already included):
+```
+"@msdyn365-commerce-marketplace:registry" "https://pkgs.dev.azure.com/commerce-partner/Registry/_packaging/dynamics365-commerce/npm/registry/"
+```
+To install the packages in your local environment, run the following commands from the command prompt. These commands automatically update the package.json file so that it includes the dependencies.
+```
+yarn add @msdyn365-commerce-marketplace/ commercechat-with-powervirtualagents  
+yarn add @msdyn365-commerce-marketplace/ commercechat-with-omnichannelforcustomerservice
+```
+In the package.json, you should update the package version to a specific version.
+
+
+
+
+## Prerequisites within Omnichannel for Customer Service 
+
+As a pre-requisite, you need to [configure chat](https://docs.microsoft.com/en-us/dynamics365/customer-service/set-up-chat-widget) in Omnichannel for Customer Service Administration module and obtain some of the parameters to configure the chat experience. 
+
+We need following variables to be added as context variables within Livechat workstream that has been configured. These values are passed as record identification parameters and as contextual parameters to Omnichannel for Customer Service chat session by Commerce Chat module. 
+
+| Context Variable| Description           | Type  |
+| ------------- |:-------------:| -----:|
+| CustomerId      | Account Number of the consumer| Text |
+| Email      | Email of the consumer|   Text |
+| Name | Name of the consumer    |    Text |
+| eCommerceCustPageURL| Page from where chat was trigger   |    Text |
+
+Once chat has been configured within Omnichannel for Customer Service administration, you can obtain a script similar to below. Copy it to notepad as values from this are needed for configuration of Commerce Chat module. 
+
+<script id="Microsoft_Omnichannel_LCWidget" src="https://oc-cdn-ocprod.azureedge.net/livechatwidget/scripts/LiveChatBootstrapper.js" data-app-id="xxxx-xxx-4be7-bcd5-1d118ecffe1f" data-org-id="5a0e73c0-xxxx-xxxxx-xxx- 76df135f375d" data-org-url="https://xxsxxxxssdb348f-crm.omnichannelengagementhub.com"></script>
+
+
+
+## Configuration of the module
+
+Commerce Chat with Omnichannel for Customer Service can be added as a fragment or within a container on the specific page. Once it is added, it needs to be configured to connect with Omnichannel for Customer Service.   
+
+Important properties to connect to Omnichannel for Customer Service on the site builder as part of the new fragment as part of new module setup. 
+
+| Field| Description           | Default value  |
+| ------------- |:-------------:| -----:|
+| script src     | Script src tag attribute value |https://oc-cdn-ocprod.azureedge.net/livechatwidget/scripts/LiveChatBootstrapper.js  |
+| Data App ID   | Script tag data-app-id attribute value|    |
+| Data Org ID | Script tag data-org-id attribute value     |    |
+| Data Org URL | Script tag data-org-url attribute value     |     |
+
+
+## Content security policy setting
+
+Content Security Policy (CSP) in Microsoft Dynamics 365 Commerce is an additional layer of security that helps detect and mitigate some types of web attacks. Content Security policy is turned on by default. As part of the extensions tab in the site builder tool, these need to be edited to communicate with additional domains used by Power Virtual Agents and Omnichannel for Customer Service. 
+
+### child-src
+
+https://login.microsoftonline.com
+https://oc-cdn-ocprod.azureedge.net
+https://powerva.microsoft.com
+https://directline.botframework.com
+wss://directline.botframework.com
+https://*.communication.azure.com
+https://*.teams.microsoft.com
+https://ecs.office.com
+https://*.skype.com/*
+https://browser.pipe.aria.microsoft.com
+https://oc-cdn-ocprod.azureedge.net
+https://cdn.botframework.com
+https://webchatic3.blob.core.windows.net
+https://comms.omnichannelengagementhub.com
+https://ocsdk-prod.azureedge.net
+https://*.asm.skype.com
+https://*.ng.msg.teams.microsoft.com/*
+
+### font-src
+https://oc-cdn-ocprod.azureedge.net
+
+### frame-ancestors
+https://oc-cdn-ocprod.azureedge.net
+
+### img-src
+https://oc-cdn-ocprod.azureedge.net
+
+### media-src, object-src
+https://oc-cdn-ocprod.azureedge.net
+
+### script-src
+https://oc-cdn-ocprod.azureedge.net
+https://cdn.botframework.com
+
+### style-src
+https://oc-cdn-ocprod.azureedge.net
+
+Power Virtual Agents maintains a list of these domains as part of their [documentation](https://docs.microsoft.com/en-us/power-virtual-agents/requirements-quotas) and refer to this for latest information. 
+
+Omnichannel for Customer Service maintains a list of these domains as part of their [documentation](https://docs.microsoft.com/en-us/dynamics365/customer-service/system-requirements-omnichannel) and refer to this for latest.
+
+
+# Commerce Call Center add-in for Omnichannel for Customer Service
+
+Commerce Chat add-in for Omnichannel for Customer Service enables live agents using Omnichannel for Customer Service agent user interface to easily access Dynamics 365 Commerce Customer Service module with contextual information for the customer along with their sales orders information. It also enables customer service agents to place new orders, perform returns and verify order status information. Dynamics 365 Commerce call center is a PCI-DSS compliant application. 
+Dynamics 365 Omnichannel for Customer Service enables organizations to instantly connect and engage with their customers via channels like live Chat, voice, digital messaging and SMS. Commerce Call Center Add-in for Omnichannel for Customer Service can be used by agents across all these channels.
+
+Commerce Add-in for Omnichannel for Customer Service is available from App Source and can be installed on Power Platform. To install, Power Platform Administrator, choose the right environment with Power Platform Admin Center where Omnichannel for Customer Service is installed. Navigate to Dynamics 365 Apps -> App Source and search for “Commerce Add-In for Omnichannel for Customer Service”.  Then click on Get it now to install the solution.
+
+Post installation of the solution, navigate to [https://make.powerapps.com](https://make.powerapps.com), choose the right environments where Commerce Add-In for Omnichannel for Customer Service solution was installed.  Then select Data -> Tables -> Conversation from the list.  Select the Conversation Summary form from the Forms section.  Open the form in the classic editor and set the Finance and Operations environment URL. This is the only field that needs to be modified and pointed to Finance and Operations environment URL.
+
+Omnichannel for Customer Service provides the ability to automatically identify the customer to assist them better. Dynamics 365 e-commerce chat module passes this identification information and Commerce Call Center form is opened in Finance and Operation instance within the Agent Interface. For every incoming conversation request for the chat channel includes contextual information for the request and customer details – customer account number, customer name and email used on Dynamics 365 e-commerce site. Dynamics 365 Commerce call center is also opened within agent interface with deep link to this customer record and their sales order information. Post 10.0.24 release, this functionality is available as part of the hotfix# 653837.  We recommend that as a business process, agents cross verify record identification information passed by the chat module with the customer.
+
+The Commerce Call Center embedding within agent interface is available across all channels that Omnichannel for Customer Service supports. Commerce Call Center in Finance and Operations takes a deep link parameter customerId that is passed by Commerce Chat with Omnichannel for Customer Service for e-commerce webchat channel. For other channels like voice, social and messaging, agents can search using details provided by customers. 
+
+## Known Issues
+
+ -  Third-party application tab refreshes when focus is changed - When you host first- or third-party URLs in Omnichannel for Customer Service using the application tab, and when an agent switches from the current application tab to another application tab within the session or switches to another session, the [application that is hosted in the tab will be refreshed](https://go.microsoft.com/fwlink/p/?linkid=2165393) to the initial state. For example, your session has two application tabs, Knowledge Search and Bing Search (https://www.bing.com). You select the Bing Search tab and see the Bing search page. Now, you'll search for a keyword - Latest Surface laptop, and the search results are displayed. When you switch from Bing Search to Knowledge Search, and again switch to Bing Search, the search page is refreshed, and you'll see the Bing search page. 
+ -  Commerce Call Center will only load within paired Power Platform environments. F&O and Power Platform can be linked using Lifecycle services and embedding will only work with paired environments. 
+ - Deep linking to Commerce Customer Service form is available from 10.0.24 release onwards. Commerce customer service form takes a parameter customerId that is being passed from e-commerce based on customer sign-in. 
+ - Single sign-on from Dynamics 365 e-commerce to Omnichannel for Customer Service using Azure B2C is not supported at this time. 
